@@ -1,0 +1,10 @@
+{
+  "name": "Valiprop Dev",
+  "image": "mcr.microsoft.com/powershell:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "sudo": "true"
+    }
+  },
+  "postCreateCommand": "pwsh -Command \"iwr -useb https://aka.ms/install-pac-linux | iex\""
+}
