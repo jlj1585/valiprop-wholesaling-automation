@@ -1,0 +1,24 @@
+name: Build Power Platform Solution
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-solution:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Power Platform CLI
+        run: npm install -g pac
+
+      - name: Validate solution packaging
+        run: |
+          pac solution pack \
+            --folder src \
+            --zipfile test-build.zip
