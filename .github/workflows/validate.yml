@@ -1,0 +1,27 @@
+name: Validate Power Platform Solution
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  validate-solution:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Power Platform CLI
+        run: npm install -g pac
+
+      - name: Authenticate to Power Platform
+        run: pac auth create --url https://valiprop.crm.dynamics.com
+
+      - name: Run Solution Checker
+        run: |
+          pac solution check \
+            --path src \
+            --outputDirectory solution-check-results
