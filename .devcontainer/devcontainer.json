@@ -6,5 +6,5 @@
       "sudo": "true"
     }
   },
-  "postCreateCommand": "pwsh -Command \"iwr -useb https://aka.ms/install-pac-linux | iex\""
+  "postCreateCommand": "bash -c \"pwsh -Command 'iwr -useb https://aka.ms/install-pac-linux | iex'\""
 }
