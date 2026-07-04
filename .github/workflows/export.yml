@@ -1,0 +1,39 @@
+name: Export Power Platform Solution
+
+on:
+  schedule:
+    - cron: "0 7 * * *"   # Daily at 7 AM Phoenix time
+  workflow_dispatch:
+
+jobs:
+  export-solution:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Power Platform CLI
+        run: npm install -g pac
+
+      - name: Authenticate to Power Platform
+        run: pac auth create --url https://valiprop.crm.dynamics.com
+
+      - name: Export solution
+        run: |
+          pac solution export \
+            --name ValipropWholesalingAutomation \
+            --path exported-solution \
+            --managed false
+
+      - name: Copy export into repo
+        run: |
+          cp -R exported-solution/* src/
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Automated solution export"
+          git push
