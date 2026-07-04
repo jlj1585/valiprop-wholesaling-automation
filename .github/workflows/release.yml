@@ -1,0 +1,32 @@
+name: Release Power Platform Solution
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Solution version number"
+        required: true
+
+jobs:
+  release-solution:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Power Platform CLI
+        run: npm install -g pac
+
+      - name: Pack solution
+        run: |
+          pac solution pack \
+            --folder src \
+            --zipfile valiprop-${{ github.event.inputs.version }}.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.event.inputs.version }}
+          name: "Valiprop Wholesaling Automation v${{ github.event.inputs.version }}"
+          files: valiprop-${{ github.event.inputs.version }}.zip
